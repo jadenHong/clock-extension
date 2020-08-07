@@ -2,8 +2,16 @@ const toDoForm = document.querySelector('.js-toDoForm');
 const toDoInput = document.querySelector('.toDoInput');
 const toDoList = document.querySelector('.js-toDoList');
 const TODOS_LS = 'toDos';
-const toDos = [];
+let toDos = [];
 
+function deleteToDo(e) {
+    const btn = e.target;
+    const li = btn.parentNode;
+    toDoList.removeChild(li);
+    const cleanToDos = toDos.filter((toDo) => { return toDo.id !== parseInt(li.id) });
+    toDos = cleanToDos;
+    saveToDos();
+}
 
 function saveToDos() {
     localStorage.setItem(TODOS_LS, JSON.stringify(toDos));// when you save just like this, you will see object Object in the value. because localStorage can not save JS's data. Only!!! can save String type.
@@ -21,6 +29,7 @@ function paintToDo(text) {
     const li = document.createElement('li');
     const delBtn = document.createElement('button');
     delBtn.innerHTML = '❌';
+    delBtn.addEventListener('click', deleteToDo);
     const span = document.createElement('span');
     const newID = toDos.length + 1;
     span.innerHTML = text;
